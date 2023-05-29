@@ -1,0 +1,46 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Daftar Pelanggan</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Daftar Pelanggan</h1>
+        <a class="btn btn-primary" href="{% url 'create_customer' %}">Create</a>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nama</th>
+                    <th>Alamat</th>
+                    <th>No. HP</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for customer in customers %}
+                <tr>
+                    <td>{{ customer.id_cust }}</td>
+                    <td>{{ customer.nama_cust }}</td>
+                    <td>{{ customer.alamat }}</td>
+                    <td>{{ customer.hp }}</td>
+                    <td>
+                        <a class="btn btn-sm btn-primary" href="{% url 'update_customer' customer.id_cust %}">Update</a>
+                        <form action="{% url 'delete_customer' customer.id_cust %}" method="post" style="display: inline;">
+                            {% csrf_token %}
+                            <button class="btn btn-sm btn-danger" type="submit" onclick="return confirm('Apakah Anda yakin ingin menghapus pelanggan ini?')">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5">Tidak ada pelanggan.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
